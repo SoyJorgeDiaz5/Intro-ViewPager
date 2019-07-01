@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.TextView;
+
 import com.google.android.material.tabs.TabLayout;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +24,7 @@ public class IntroActivity extends AppCompatActivity {
     private List<ScreenItem> itemList;
     private Button btnGetStarted;
     private Animation animGetStarted;
+    private TextView tvSkip;
     private static String pref_key_name = "main_preferences";
     private static String pref_is_intro_opened = "isIntroOpened";
 
@@ -37,6 +40,7 @@ public class IntroActivity extends AppCompatActivity {
         setBtnNextEvent();
         setTabIndicatorListener();
         setBtnGetStarted();
+        setSkipEvent();
     }
 
     private void setupViewPager() {
@@ -59,6 +63,7 @@ public class IntroActivity extends AppCompatActivity {
         tabIndicator = findViewById(R.id.tab_indicator);
         btnNext = findViewById(R.id.btn_next);
         btnGetStarted = findViewById(R.id.btn_get_started);
+        tvSkip = findViewById(R.id.tv_skip);
         animGetStarted = AnimationUtils.loadAnimation(btnGetStarted.getContext(), R.anim.button_getstarted_anim);
     }
 
@@ -91,9 +96,19 @@ public class IntroActivity extends AppCompatActivity {
         });
     }
 
+    private void setSkipEvent() {
+        tvSkip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                screenViewPager.setCurrentItem(itemList.size());
+            }
+        });
+    }
+
     private void loadLastScreen() {
         btnNext.setVisibility(View.GONE);
         tabIndicator.setVisibility(View.INVISIBLE);
+        tvSkip.setVisibility(View.INVISIBLE);
         btnGetStarted.setVisibility(View.VISIBLE);
         btnGetStarted.setAnimation(animGetStarted);
     }
