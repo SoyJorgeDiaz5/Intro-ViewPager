@@ -19,6 +19,7 @@ public class IntroActivity extends AppCompatActivity {
     private Button btnNext;
     private int indicatorPosition;
     private List<ScreenItem> itemList;
+    private Button btnGetStarted;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +51,7 @@ public class IntroActivity extends AppCompatActivity {
     private void initComponents() {
         tabIndicator = findViewById(R.id.tab_indicator);
         btnNext = findViewById(R.id.btn_next);
+        btnGetStarted = findViewById(R.id.btn_get_started);
     }
 
     private void setBtnNextEvent(){
@@ -61,7 +63,18 @@ public class IntroActivity extends AppCompatActivity {
                     indicatorPosition++;
                     screenViewPager.setCurrentItem(indicatorPosition);
                 }
+
+                // The last screen of ViewPager
+                if (indicatorPosition == itemList.size()-1){
+                    loadLastScreen();
+                }
             }
         });
+    }
+
+    private void loadLastScreen() {
+        btnNext.setVisibility(View.GONE);
+        tabIndicator.setVisibility(View.GONE);
+        btnGetStarted.setVisibility(View.VISIBLE);
     }
 }
