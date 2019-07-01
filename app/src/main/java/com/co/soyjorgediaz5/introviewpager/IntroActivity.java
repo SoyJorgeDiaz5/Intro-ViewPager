@@ -3,6 +3,7 @@ package com.co.soyjorgediaz5.introviewpager;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
@@ -34,6 +35,7 @@ public class IntroActivity extends AppCompatActivity {
         setupViewPager();
         setBtnNextEvent();
         setTabIndicatorListener();
+        setBtnGetStarted();
     }
 
     private void setupViewPager() {
@@ -73,6 +75,15 @@ public class IntroActivity extends AppCompatActivity {
                 if (indicatorPosition == itemList.size()-1){
                     loadLastScreen();
                 }
+            }
+        });
+    }
+
+    private void setBtnGetStarted(){
+        btnGetStarted.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(btnGetStarted.getContext(), HomeActivity.class));
             }
         });
     }
