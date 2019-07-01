@@ -5,6 +5,8 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 
 import com.google.android.material.tabs.TabLayout;
@@ -20,6 +22,7 @@ public class IntroActivity extends AppCompatActivity {
     private int indicatorPosition;
     private List<ScreenItem> itemList;
     private Button btnGetStarted;
+    private Animation animGetStarted;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +33,7 @@ public class IntroActivity extends AppCompatActivity {
         setMockData();
         setupViewPager();
         setBtnNextEvent();
+        setTabIndicatorListener();
     }
 
     private void setupViewPager() {
@@ -52,6 +56,7 @@ public class IntroActivity extends AppCompatActivity {
         tabIndicator = findViewById(R.id.tab_indicator);
         btnNext = findViewById(R.id.btn_next);
         btnGetStarted = findViewById(R.id.btn_get_started);
+        animGetStarted = AnimationUtils.loadAnimation(btnGetStarted.getContext(), R.anim.button_getstarted_anim);
     }
 
     private void setBtnNextEvent(){
@@ -74,7 +79,29 @@ public class IntroActivity extends AppCompatActivity {
 
     private void loadLastScreen() {
         btnNext.setVisibility(View.GONE);
-        tabIndicator.setVisibility(View.GONE);
+        tabIndicator.setVisibility(View.INVISIBLE);
         btnGetStarted.setVisibility(View.VISIBLE);
+        btnGetStarted.setAnimation(animGetStarted);
+    }
+
+    private void setTabIndicatorListener(){
+        tabIndicator.addOnTabSelectedListener(new TabLayout.BaseOnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                if (tab.getPosition() == itemList.size()-1) {
+                    loadLastScreen();
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
     }
 }
