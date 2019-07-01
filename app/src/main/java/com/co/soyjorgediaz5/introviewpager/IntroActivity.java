@@ -2,16 +2,14 @@ package com.co.soyjorgediaz5.introviewpager;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
-
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
-
 import com.google.android.material.tabs.TabLayout;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,12 +22,15 @@ public class IntroActivity extends AppCompatActivity {
     private List<ScreenItem> itemList;
     private Button btnGetStarted;
     private Animation animGetStarted;
+    private static String pref_key_name = "main_preferences";
+    private static String pref_is_intro_opened = "isIntroOpened";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_intro);
+        checkIntroStatusOnPreferences();
 
+        setContentView(R.layout.activity_intro);
         initComponents();
         setMockData();
         setupViewPager();
@@ -84,6 +85,8 @@ public class IntroActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(btnGetStarted.getContext(), HomeActivity.class));
+                saveIntroStatusOnPreferences();
+                finish();
             }
         });
     }
@@ -106,13 +109,30 @@ public class IntroActivity extends AppCompatActivity {
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-
             }
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
             }
         });
+    }
+
+    private void saveIntroStatusOnPreferences() {
+        SharedPreferences preferences = getApplicationContext().getSharedPreferences(pref_key_name, MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean(pref_is_intro_opened, true);
+        editor.apply();
+    }
+
+    private void checkIntroStatusOnPreferences(){
+        if (getPrefIntroStatus()) {
+            startActivity(new Intent(this, HomeActivity.class));
+            finish();
+        }
+    }
+
+    private boolean getPrefIntroStatus() {
+        SharedPreferences preferences = getApplicationContext().getSharedPreferences(pref_key_name, MODE_PRIVATE);
+        return preferences.getBoolean(pref_is_intro_opened, false);
     }
 }
